@@ -6,9 +6,9 @@ def profile(request):
     return render(request,'profile.html')
 
 def login(request):
-    return HttpResponse('hello world')
+    return render(request,'login.html')
 
 def signup(request):
-    return HttpResponse('hello world')
+    return render(request,'signup.html')
 
 
