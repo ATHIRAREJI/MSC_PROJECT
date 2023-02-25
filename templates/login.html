@@ -11,7 +11,7 @@
       rel="stylesheet">
     <title>StudentClub</title>
     <style>
-        button.login, button.signup {
+        button.login, a.signup {
             display: flex;
             align-items: center;
         }
@@ -35,25 +35,44 @@
   </head>
   <body>
     <div class="container">
-        <h2>StudentClub Login</h2>
-        <form action="/action_page.php">
-        <div class="form-group">
-            <label for="email">Email:</label>
-            <input type="email" class="form-control" id="email" placeholder="Enter email" name="email">
+        <div class="row">
+            <div class="col-md-6 offset-md-3" style="margin-top: 100px;">
+                <div class="card shadow" style="border-color: antiquewhite; border-radius: 8px;">
+                    <div class="card-header">
+                        <h2>StudentClub Login</h2>
+                        {% if form.errors %}
+                            <span style="color: red; font-style: bold;">Your username and password did not match</span>
+                        {% endif %}
+                    </div>
+                    <div class="card-body">
+                        <form action="" method="post" role="form">
+                            {% csrf_token %}
+                        <div class="form-group">
+                            <label for="username">Username:</label>
+                            <input type="username" class="form-control" id="username" placeholder="Enter username" name="username">
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password:</label>
+                            <input type="password" class="form-control" id="password" placeholder="Enter password" name="password">
+                        </div>
+                        <div class="btns" style="text-align: center;">
+                            <button type="submit" value="login" class="btn login" style="background-color: #C264DE; color: antiquewhite;"><span class="material-icons" >
+                                login
+                                </span>Login</button>
+
+                            <input type="hidden" name="next" value="{{next}}">
+                                <a href="{% url 'signup' %}"  class="btn signup" style="background-color: #C264DE; margin-left: 10px;color: antiquewhite;"><span class="material-icons" style="margin-bottom: -5px;">
+                                    account_circle
+                                    </span>
+                                    Create an account
+                                </a>
+                            </form>
+                        </div>
+                        </form>
+                    </div>
+                  </div>
+            </div>
         </div>
-        <div class="form-group">
-            <label for="pwd">Password:</label>
-            <input type="password" class="form-control" id="pwd" placeholder="Enter password" name="pswd">
-        </div>
-        <div class="btns" style="text-align: center;">
-            <button type="submit" class="btn login" style="background-color: #C264DE; color: antiquewhite;"><span class="material-icons" >
-                login
-                </span>Login</button>
-            <button type="submit" class="btn signup" style="background-color: #C264DE; margin-left: 10px;color: antiquewhite;"><span class="material-icons">
-                account_circle
-                </span>Create an account</button>
-        </div>
-        </form>
-    </div>
+    </div> 
     </body>
 </html>
