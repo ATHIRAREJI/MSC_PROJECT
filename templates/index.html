@@ -77,26 +77,27 @@
       </nav>
       <br>
 <!--Nabar end-->
-
+{% block content %}
 <div class="container">
-    <div class="card" style="width:550px">
-      <img class="card-img-top" src="./img/post.jfif" alt="Card image" style="width:100%">
+  {% for item in post_items %}
+    <div class="card shadow" style="width:550px;">
+      <a href="{{ item.get_absolute_url }}"><img class="card-img-top" src="{{ item.post_picture.url }}" alt="Card image" style="width:100%"></a>
       <div class="card-body">
-        <h4 class="card-title">John Doe</h4>
-        <p class="card-text">Some example text some example text. John Doe is an architect and engineer</p>
-        <a href="#" class="btn btn-primary">See Profile</a>
+        <h5>John Doe</h4>
+        <p>@{{ item.user.username }}</p>
+        <p class="card-text">{{item.post_caption}}</p>
+        <p>
+          {% for tag in item.tags.all %}
+            <a href="{{ tag.get_absolute_url }}">#{{ tag }}</a>
+          {% endfor %}
+        </p>
+        <p>{{item.posted_date}}</p>
       </div>
     </div>
     <br>
-    <div class="card" style="width:550px">
-        <img class="card-img-top" src="./img/post.jfif" alt="Card image" style="width:100%">
-        <div class="card-body">
-          <h4 class="card-title">John Doe</h4>
-          <p class="card-text">Some example text some example text. John Doe is an architect and engineer</p>
-          <a href="#" class="btn btn-primary">See Profile</a>
-        </div>
-      </div>
+  {% endfor %}
 </div>
+{% endblock %}
    
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
