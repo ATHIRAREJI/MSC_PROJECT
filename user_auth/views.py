@@ -1,15 +1,43 @@
 from django.http import HttpResponse
-from django.shortcuts import redirect, render
+from django.shortcuts import render, redirect, get_object_or_404
+from django.template import loader
+from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.models import User
 
 from .forms import SignupForm, ChangePasswordForm
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import update_session_auth_hash
+from django.urls import reverse
+from django.db import transaction
+
+from user_auth.models import Profile
+from post.models import Post, Follow, Stream
 
 # Create your views here.
-def Profile(request):
-    return render(request,'profile.html')
+def UserProfile(request, username):
+    user = get_object_or_404(User, username=username)
+    profile = Profile.objects.get(user=user)
+    posts = Post.objects.filter(user=user).order_by('-posted_date')
+
+    #Profile counts
+    post_count = Post.objects.filter(user=user).count()
+    following_count = Follow.objects.filter(follower=user).count()
+    followers_count = Follow.objects.filter(following=user).count()
+
+    #Check logged in user follow this profile
+    follow_or_not  = Follow.objects.filter(follower=request.user, following=user).exists()
+
+    template = loader.get_template('profile.html')
+    context = {
+        'posts': posts,
+        'profile': profile,
+        'post_count': post_count,
+        'following_count': following_count,
+        'follower_count': followers_count,
+        'follow_or_not': follow_or_not
+    }
+    return HttpResponse(template.render(context, request))
 
 def Signup(request):
     if request.method == "POST":
@@ -22,12 +50,13 @@ def Signup(request):
             password = form.cleaned_data.get('password')
 
             User.objects.create_user(username=username,email=email,password=password)
-            return redirect('profile')
+            return redirect('index')
     else:
         form = SignupForm()
     context = {
         'form': form
     }
+    
     return render(request,'signup.html', context)
 
 @login_required
@@ -54,3 +83,28 @@ def PasswordChange(request):
 
 def PasswordChangeDone(request):
 	return render(request, 'change_password_done.html')
+
+
+@login_required
+def ProfileFollow(request, username, option):
+    user = request.user
+    following_user = get_object_or_404(User, username= username)
+    
+    try:
+        f, created = Follow.objects.get_or_create(follower=user, following= following_user)
+        if int(option) == 0:
+            f.delete()
+            Stream.objects.filter(following=following_user, user = user).all().delete()
+        else:
+            posts = Post.objects.all().filter(user=following_user)[:10]
+            with transaction.atomic():
+                for post in posts:
+                    stream =  Stream(post=post, user=user, date=post.posted_date, following = following_user)
+                    stream.save()
+        
+        return HttpResponseRedirect(reverse('profile', args=[username]))
+    except User.DoesNotExist:
+        return HttpResponseRedirect(reverse('profile', args=[username]))
+
+
+

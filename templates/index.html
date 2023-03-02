@@ -13,14 +13,15 @@
     <title>StudentClub</title>
     <style>
         a.nav-link {
-            display: flex;
-            align-items: center;
-        }
+          display: flex;
+          align-items: center;
+      }
         .card {
             margin: 0 auto; /* Added */
             float: none; /* Added */
             margin-bottom: 10px; /* Added */
          }
+
     </style>
   </head>
   <body>
@@ -79,21 +80,30 @@
 <!--Nabar end-->
 {% block content %}
 <div class="container">
-  {% for item in post_items %}
-    <div class="card shadow" style="width:550px;">
-      <a href="{{ item.get_absolute_url }}"><img class="card-img-top" src="{{ item.post_picture.url }}" alt="Card image" style="width:100%"></a>
-      <div class="card-body">
-        <h5>John Doe</h4>
-        <p>@{{ item.user.username }}</p>
-        <p class="card-text">{{item.post_caption}}</p>
-        <p>
-          {% for tag in item.tags.all %}
-            <a href="{{ tag.get_absolute_url }}">#{{ tag }}</a>
-          {% endfor %}
-        </p>
-        <p>{{item.posted_date}}</p>
-      </div>
+  {% for post in post_items %}
+  <div class="card shadow" style="width:550px;">
+    <img class="card-img-top" src="{{ post.post_picture.url }}" alt="Card image" style="width:550px;">
+    <div class="card-body" style="display: flex;
+    align-items: center;">
+        <div class="left-content">
+            <h4 class="card-title"><img src="{% static '/img/profile.jpeg' %}" class="float-left" width="36" height="36">  @{{ post.user.username }}</h4>
+            <p class="card-text">{{ post.post_caption }}</p>
+            <p>{{ post.posted_date }}</p>
+            <p>
+              {% for tag in post.tags.all %}
+              <a href="{{ tag.get_absolute_url }}" style="color: #007bff;">#{{tag}}</a>
+              {% endfor %}
+            </p>
+        </div>
+        <div class="right-content" style="margin-left:auto; margin-bottom: 51px;">
+          <a href="{% url 'postlike' post.id %}" class="btn" style="text-align: center;">
+            <span class="material-icons" style="color: rgb(230, 81, 81);">
+              favorite
+              </span></a>
+            <p>{{ post.likes }} Likes</p>
+        </div>
     </div>
+  </div>
     <br>
   {% endfor %}
 </div>

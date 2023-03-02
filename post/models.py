@@ -62,5 +62,9 @@ class Stream(models.Model):
         for follower in followers:
             stream = Stream(post=post, user=follower.follower, date=post.posted_date, following=user)
             stream.save()
+
+class PostLikes(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_liked')
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='post_liked')
 #Once post saved, add_post function within the stream class will be called , here the sender is Post class
 post_save.connect(Stream.add_post, sender=Post)

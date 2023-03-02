@@ -18,8 +18,12 @@ from django.urls import path,include
 from django.conf.urls.static import static
 from django.conf import settings
 
+from user_auth.views import UserProfile,ProfileFollow
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('user/', include('user_auth.urls')),
     path('post/', include('post.urls')),
+    path('<username>/', UserProfile, name="profile"),
+    path('<username>/follow/<option>', ProfileFollow, name="follow"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

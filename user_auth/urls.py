@@ -1,9 +1,9 @@
 from django.urls import path
-from user_auth.views import Profile, Signup, PasswordChange, PasswordChangeDone
+from user_auth.views import UserProfile, Signup, PasswordChange, PasswordChangeDone
 from django.contrib.auth import views as auth_views
 
 urlpatterns = [
-    path('profile/', Profile, name='profile'),
+    path('profile/', UserProfile, name='profile'),
     path('signup/', Signup, name='signup'),
     path('changepassword/', PasswordChange, name='change_password'),
     path('changepassword/done', PasswordChangeDone, name='change_password_done'),
