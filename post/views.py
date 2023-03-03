@@ -4,8 +4,14 @@ from django.http import HttpResponse, HttpResponseRedirect
 
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
+
+#Models
 from post.models import Stream, Post, Tag, PostLikes
+from comment.models import PostComment
+
+#Forms
 from post.forms import PostForm
+from comment.forms import CommentForm
 
 # Create your views here.
 @login_required
@@ -25,9 +31,26 @@ def Index(request):
 @login_required
 def PostDetails(request, post_id):
     post = get_object_or_404(Post, id=post_id)
+    user = request.user
+
+    # Comment section 
+    comments = PostComment.objects.filter(post=post).order_by('-date')
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.post = post
+            comment.user = user
+            comment.save()
+            return HttpResponseRedirect(reverse('postdetails', args=[post_id]))
+    else:
+        form = CommentForm()
+
     template = loader.get_template('post_detail.html')
     context = {
-        'post': post
+        'post': post,
+        'form': form,
+        'comments': comments
     }
 
     return HttpResponse(template.render(context, request))
