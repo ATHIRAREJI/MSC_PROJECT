@@ -4,7 +4,7 @@ from django.template import loader
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.models import User
 
-from .forms import SignupForm, ChangePasswordForm
+from .forms import SignupForm, ChangePasswordForm, ProfileEditForm
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import update_session_auth_hash
@@ -18,6 +18,7 @@ from post.models import Post, Follow, Stream
 def UserProfile(request, username):
     user = get_object_or_404(User, username=username)
     profile = Profile.objects.get(user=user)
+    print(profile)
     posts = Post.objects.filter(user=user).order_by('-posted_date')
 
     #Profile counts
@@ -50,7 +51,7 @@ def Signup(request):
             password = form.cleaned_data.get('password')
 
             User.objects.create_user(username=username,email=email,password=password)
-            return redirect('index')
+            return redirect('editprofile')
     else:
         form = SignupForm()
     context = {
@@ -105,6 +106,32 @@ def ProfileFollow(request, username, option):
         return HttpResponseRedirect(reverse('profile', args=[username]))
     except User.DoesNotExist:
         return HttpResponseRedirect(reverse('profile', args=[username]))
+
+@login_required
+def EditProfile(request):
+    user = request.user.id
+    profile = Profile.objects.get(user__id=user)
+    if request.method == 'POST':
+        form = ProfileEditForm(request.POST, request.FILES)
+        if form.is_valid():
+            profile.first_name = form.cleaned_data.get('first_name')
+            profile.last_name = form.cleaned_data.get('last_name')
+            profile.profile_picture = form.cleaned_data.get('profile_picture')
+            profile.course = form.cleaned_data.get('course')
+            profile.profile_info = form.cleaned_data.get('profile_info')
+            profile.save()
+            return redirect('index')
+    else:
+        form = ProfileEditForm()
+
+    context = {
+        'form': form
+    }
+
+
+    return render(request, 'profile_edit.html', context)
+
+    
 
 
 

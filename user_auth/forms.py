@@ -1,6 +1,7 @@
 from django import forms
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
+from user_auth.models import Profile
 
 def InvalidUser(value):
 	if '@' in value or '+' in value or '-' in value:
@@ -63,6 +64,22 @@ class ChangePasswordForm(forms.ModelForm):
 		if new_password != confirm_password:
 			self._errors['new_password'] =self.error_class(['Passwords do not match.'])
 		return self.cleaned_data
+	
+
+class ProfileEditForm(forms.ModelForm):
+	first_name = forms.CharField(max_length=150, required=False)
+	last_name = forms.CharField(max_length=150, required=False)
+	course = forms.CharField(max_length=150,required=False)
+	profile_picture = forms.FileField(required=False)
+	profile_info = forms.CharField(widget=forms.Textarea,max_length=300,required=False)
+
+	class Meta:
+		model = Profile
+		fields = ('profile_picture','first_name','last_name','course','profile_picture','profile_info')
+
+	
+
+
         
 		
     

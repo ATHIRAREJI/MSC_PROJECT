@@ -82,26 +82,56 @@
 <div class="container">
   {% for post in post_items %}
   <div class="card shadow" style="width:550px;">
-    <img class="card-img-top" src="{{ post.post_picture.url }}" alt="Card image" style="width:550px;">
+    <a href="{{ post.get_absolute_url }}">
+      <img class="card-img-top" src="{{ post.post_picture.url }}" alt="" style="width:550px;"></a>
     <div class="card-body" style="display: flex;
     align-items: center;">
-        <div class="left-content">
-            <h4 class="card-title"><img src="{% static '/img/profile.jpeg' %}" class="float-left" width="36" height="36">  @{{ post.user.username }}</h4>
-            <p class="card-text">{{ post.post_caption }}</p>
-            <p>{{ post.posted_date }}</p>
-            <p>
-              {% for tag in post.tags.all %}
-              <a href="{{ tag.get_absolute_url }}" style="color: #007bff;">#{{tag}}</a>
-              {% endfor %}
-            </p>
+      <div class="container">
+        <div class="row">
+          <div class="col-md-10 left-content">
+            <div class="row">
+              <div class="col-md-2">
+                {% if post.user.profile.profile_picture %}
+                <img src="{{ post.user.profile.profile_picture.url }}" class="float-left" width="36" height="36">  
+                {% else %}
+                <img src="{% static '/img/profile-image.jpg' %}" class="float-left" width="36" height="36">
+                {% endif %}
+              </div>
+              <div class="col-md-10" style="margin-left: -25px;">
+                {% if post.user.profile.first_name %}
+                <a href="{% url 'profile' post.user %}"><h6>{{post.user.profile.first_name}} {{post.user.profile.last_name}}</h6></a>
+                {% else %}
+                <a href="{% url 'profile' post.user %}"></a><h6>Unknown</h6></a>
+                {% endif %}
+                <h6>@{{ post.user.username }}</h6>
+              </div>
+            </div>
+            <div class="row">
+               <div class="col-md-12">
+                <p>
+                  {% for tag in post.tags.all %}
+                  <a href="{{ tag.get_absolute_url }}" style="color: #007bff;">#{{tag}}</a>
+                  {% endfor %}
+              </p>
+               </div>
+            </div>           
+          </div>
+          <div class="col-md-2 right-content" style="margin-left:auto; margin-bottom: 51px;">
+            <a href="{% url 'postlike' post.id %}" class="btn" style="text-align: center;">
+              <span class="material-icons" style="color: rgb(230, 81, 81);">
+                favorite
+                </span></a>
+              <p>{{ post.likes }} Likes</p>
+          </div>
         </div>
-        <div class="right-content" style="margin-left:auto; margin-bottom: 51px;">
-          <a href="{% url 'postlike' post.id %}" class="btn" style="text-align: center;">
-            <span class="material-icons" style="color: rgb(230, 81, 81);">
-              favorite
-              </span></a>
-            <p>{{ post.likes }} Likes</p>
-        </div>
+        <div class="row" >
+          <div class="col-md-12" style="text-align: justify; margin-top: -40px;">
+           <h6>{{ post.caption }}</h6>
+           <h6>{{ post.posted_date }}</h6>
+          
+          </div>
+       </div>  
+      </div>
     </div>
   </div>
     <br>

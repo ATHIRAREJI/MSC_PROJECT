@@ -6,11 +6,11 @@ from django.db.models.signals import post_save
 # Create your models here.
 class Profile(models.Model):
     user = models.OneToOneField(User,on_delete=models.CASCADE)
-    first_name = models.CharField(max_length=50, null=True, blank=True)
-    last_name = models.CharField(max_length=50, null=True, blank=True)
-    course = models.CharField(max_length=50, null=True, blank=True)
-    picture = models.ImageField(upload_to='profile_pictures', blank=True, null=True, verbose_name='Picture')
-    profile_info = models.TextField(max_length=200, null=True, blank=True)
+    first_name = models.CharField(max_length=150, null=True, blank=True)
+    last_name = models.CharField(max_length=150, null=True, blank=True)
+    course = models.CharField(max_length=150, null=True, blank=True)
+    profile_picture = models.ImageField(upload_to='profile_pictures', blank=True, null=True, verbose_name='Profile Picture')
+    profile_info = models.TextField(max_length=300, null=True, blank=True)
     created_at = models.DateField(auto_now_add=True)
 
 def create_user_profile(sender, instance, created, **kwargs):

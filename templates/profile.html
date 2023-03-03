@@ -1,14 +1,18 @@
 {% extends 'base.html' %}
 {% load static %}
 
-
 {% block content %}
     <div class="container" style="height: 250px;">
       <div class="row" style="height: 250px;">
        <div class="col-md-3" style="text-align: center; ">
-          <img src="{% static '/img/profile.jpeg' %}" class="rounded-circle" alt="Cinque Terre" width="170" height="166"> 
-          {% if profile.first_name %}{{ profile.first_name }} 
-          {{ profile.last_name }} 
+
+        {% if profile.profile_picture %}
+          <img src="{{ profile.profile_picture.url }}" class="rounded-circle" alt="Cinque Terre" width="170" height="166"> 
+        {% else %}
+          <img src="{% static '/img/profile-image.jpg' %}" class="rounded-circle" alt="Cinque Terre" width="170" height="166">
+        {% endif %}
+          {% if profile.first_name %}
+          <h5>{{ profile.first_name }}  {{ profile.last_name }} </h5>
           {% endif %}
           <h6>@{{ profile.user }}</h6>
           <h6>MSC Computing</h6>
@@ -28,12 +32,13 @@
                 <h4>{{ following_count }}</h4>
             </div>
           </div>
+          
           {% if profile.profile_info %}
                 <p>{{ profile.profile_info }}</p>
           {% endif %}
-          <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries</p>
+
           {% if user.is_authenticated and user == profile.user %}
-              <button type="button" class="btn btn-primary btn-sm">Edit profile</button>
+              <a href="{% url 'editprofile' %}" class="btn btn-primary btn-sm">Edit profile</a>
           {% else %}
             {% if follow_or_not == True %}
                 <a href="{% url 'follow' profile.user 0 %}" class="btn btn-danger btn-sm">Unfollow</a>
@@ -69,9 +74,12 @@
           {% for post in posts %}
             <div class="col-md-4" style="margin-bottom: 15px;">
                 <a href="{{ post.get_absolute_url }}">
-                  <img src="{{ post.post_picture.url }}" class="rounded" alt="Cinque Terre" width="350" height="236"> 
+                  <img src="{{ post.post_picture.url }}" class="rounded" alt="" width="350" height="236"> 
                 </a>
             </div>
+          {% empty %}
+          <br>
+          <h6>You do not have any post yet..post something and enjoy your day!!...</h6>
           {% endfor %}
         </div>
     </div>
