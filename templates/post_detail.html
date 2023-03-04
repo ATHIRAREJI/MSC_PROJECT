@@ -147,8 +147,8 @@
                       {% endif %}
                         <div class="d-flex flex-column justify-content-start ml-2">
                           <span class="d-block font-weight-bold name">
-                            {% if comment.user.first_name %}
-                            {{ comment.user.first_name }} {{ comment.user.last_name }}
+                            {% if comment.user.profile.first_name %}
+                            {{ comment.user.profile.first_name }} {{ comment.user.profile.last_name }}
                             {% else %}
                               Unknown
                             {% endif %}

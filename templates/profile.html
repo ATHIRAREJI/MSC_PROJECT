@@ -15,7 +15,9 @@
           <h5>{{ profile.first_name }}  {{ profile.last_name }} </h5>
           {% endif %}
           <h6>@{{ profile.user }}</h6>
-          <h6>MSC Computing</h6>
+          {% if profile.course %}
+            <h6>{{ profile.course }}</h6>
+          {% endif %} 
        </div>
        <div class="col-md-9">
           <div class="row profile-count-display" style="text-align: center;">

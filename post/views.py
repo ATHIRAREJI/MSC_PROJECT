@@ -31,17 +31,19 @@ def Index(request):
 @login_required
 def PostDetails(request, post_id):
     post = get_object_or_404(Post, id=post_id)
-    user = request.user
+    user = request.user.id
 
     # Comment section 
-    comments = PostComment.objects.filter(post=post).order_by('-date')
+    comments = PostComment.objects.filter(post=post)
     if request.method == 'POST':
         form = CommentForm(request.POST)
         if form.is_valid():
-            comment = form.save(commit=False)
-            comment.post = post
-            comment.user = user
-            comment.save()
+            comment = form.cleaned_data.get('comment')
+            PostComment(comment=comment, post_id = post_id, user_id = user).save()
+            #comment = form.save(commit=False)
+            #comment.post = post
+            #comment.user = user
+            #commentObj.save()
             return HttpResponseRedirect(reverse('postdetails', args=[post_id]))
     else:
         form = CommentForm()

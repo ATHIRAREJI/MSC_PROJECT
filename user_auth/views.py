@@ -11,10 +11,12 @@ from django.contrib.auth import update_session_auth_hash
 from django.urls import reverse
 from django.db import transaction
 
+#Models
 from user_auth.models import Profile
 from post.models import Post, Follow, Stream
 
 # Create your views here.
+@login_required
 def UserProfile(request, username):
     user = get_object_or_404(User, username=username)
     profile = Profile.objects.get(user=user)
@@ -51,7 +53,7 @@ def Signup(request):
             password = form.cleaned_data.get('password')
 
             User.objects.create_user(username=username,email=email,password=password)
-            return redirect('editprofile')
+            return redirect('login')
     else:
         form = SignupForm()
     context = {
@@ -81,7 +83,7 @@ def PasswordChange(request):
 
     return render(request, 'change_password.html',context)
 
-
+@login_required
 def PasswordChangeDone(request):
 	return render(request, 'change_password_done.html')
 
@@ -110,6 +112,7 @@ def ProfileFollow(request, username, option):
 @login_required
 def EditProfile(request):
     user = request.user.id
+    username = request.user.username
     profile = Profile.objects.get(user__id=user)
     if request.method == 'POST':
         form = ProfileEditForm(request.POST, request.FILES)
@@ -120,14 +123,14 @@ def EditProfile(request):
             profile.course = form.cleaned_data.get('course')
             profile.profile_info = form.cleaned_data.get('profile_info')
             profile.save()
-            return redirect('index')
+            #return redirect('index')
+            return HttpResponseRedirect(reverse('profile', args=[username]))
     else:
         form = ProfileEditForm()
 
     context = {
         'form': form
     }
-
 
     return render(request, 'profile_edit.html', context)
 
