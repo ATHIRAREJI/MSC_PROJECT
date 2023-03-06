@@ -12,6 +12,14 @@
       rel="stylesheet">
     <title>StudentClub</title>
     <style>
+      .self-message {
+        width:60%;float: right; text-align: right;
+      }
+
+      .received-message {
+        width:60%;float: left; text-align: left;
+      }
+
         a.nav-link {
           display: flex;
           align-items: center;
@@ -22,12 +30,12 @@
             margin-bottom: 10px; /* Added */
          }
          .sidebar {
-            margin: 0;
+            margin-left: 25px;
             padding: 0;
-            width: 340px;
+            width: 280px;
             position: fixed;
-            height: 100%;
-            overflow: auto;
+            height: 580px;
+            overflow-y: scroll;
         }
 
          .sidebar a {
@@ -215,10 +223,9 @@ div.content {
    <div class="row">
     <div class="col-md-3">
         <div class="card sidebar shadow">
-            <ul class="contact-list  float-end">
-
+            <ul class="contact-list float-end">
                 {% for message in messages %}
-                  <li class="contact-list-item  border-bottom" style="padding-top: 0px; padding-bottom: 0px;">
+                  <li class="contact-list-item border-bottom" style="padding-top: 0px; padding-bottom: 0px; margin-left:-40px;">
                       <a href="#">
                           <span class="pro-pic">
                             {% if message.user.profile.profile_picture %}
@@ -246,20 +253,21 @@ div.content {
     <div class="col-md-8">
        <div class="row"  style="overflow-y: scroll;height: 450px;">
             <div class="col-md-12">
+              {% for msg_data in message_data %}
                 <div class="card shadow" >
-                    <div class="card-body"><strong>Athira Reji</strong> <strong>04-Feb-2023</strong></div>
-                    <p style="padding: 5px; margin-left: 8px; ">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
+                  <div class="card-body">
+                    <div class="message_content {% if msg_data.user.username == request.user.username %}self-message {% else %}received-message{% endif %}">
+                      {% if msg_data.sender.profile.first_name %}
+                       <strong>{{ msg_data.sender.profile.first_name }} {{ msg_data.sender.profile.last_name }} - </strong> 
+                       {% else %}
+                       <strong>Unknown</strong> 
+                       {% endif %}
+                      <strong>{{ msg_data.message_date|date:'N d G:i'  }}</strong>
+                      <p style="padding: 5px; margin-left: 8px; ">{{ msg_data.body }}</p>
+                    </div>
+                  </div>
                 </div>
-        
-                <div class="card shadow" >
-                    <div class="card-body"><strong>Athira Reji</strong> <strong>04-Feb-2023</strong></div>
-                    <p style="padding: 5px; margin-left: 8px; ">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
-                </div>
-        
-                <div class="card shadow" >
-                    <div class="card-body"><strong>Athira Reji</strong> <strong>04-Feb-2023</strong></div>
-                    <p style="padding: 5px; margin-left: 8px; ">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
-                </div>
+              {% endfor %}
             </div>
        </div>
 
