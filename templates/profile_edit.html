@@ -6,9 +6,11 @@
     <div class="row">
         <div class="col-md-8 offset-md-2" style="margin-top: 20px;">
             <div class="card shadow" style="border-color: antiquewhite; border-radius: 8px;">
+                <div class="card-title text-center" style="margin-top:25px;">
+                    <h5>Edit Profile</h5>
+                </div>
                 <div class="card-body">
-                    <h2>Edit Profile</h2>
-                    <form action="" method="post" role="form" enctype="multipart/form-data">
+                    <form action="" method="post" role="form" enctype="multipart/form-data" class="edit-profile">
                         {% csrf_token %}
                         <div class="form-group">
                             <span>{{ form.errors}}</span>
@@ -16,7 +18,7 @@
 
                         <div class="form-group">
                             <div class="custom-file">
-                                <input type="file" class="custom-file-input" id="customFile" name="profile_picture">
+                                <input type="file" class="custom-file-input form-control" id="customFile" name="profile_picture">
                                 <label class="custom-file-label" for="customFile" >Choose file</label>
                               </div>
                         </div>
@@ -42,10 +44,8 @@
                     </div>
 
                     <div class="btns" style="text-align: center;">
-                        <button type="submit" class="btn signup" style="background-color: #C264DE; margin-left: 10px;color: antiquewhite; display: flex; align-items: center;">
-                            <span class="material-icons" style="margin-right: 10px;">
-                            settings
-                            </span>Update profile
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">
+                            Update profile
                         </button>
                     </div>
                     </form>

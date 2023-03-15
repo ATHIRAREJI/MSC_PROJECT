@@ -20,7 +20,6 @@ from post.models import Post, Follow, Stream
 def UserProfile(request, username):
     user = get_object_or_404(User, username=username)
     profile = Profile.objects.get(user=user)
-    print(profile)
     posts = Post.objects.filter(user=user).order_by('-posted_date')
 
     #Profile counts
@@ -38,7 +37,8 @@ def UserProfile(request, username):
         'post_count': post_count,
         'following_count': following_count,
         'follower_count': followers_count,
-        'follow_or_not': follow_or_not
+        'follow_or_not': follow_or_not,
+        'page': 'profile'
     }
     return HttpResponse(template.render(context, request))
 
@@ -129,7 +129,8 @@ def EditProfile(request):
         form = ProfileEditForm()
 
     context = {
-        'form': form
+        'form': form,
+        'page': 'profile'
     }
 
     return render(request, 'profile_edit.html', context)

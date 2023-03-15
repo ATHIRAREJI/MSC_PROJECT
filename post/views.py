@@ -23,7 +23,8 @@ def Index(request):
     template = loader.get_template('index.html')
 
     context = {
-        'post_items': post_items
+        'post_items': post_items,
+        'page': 'post'
     }
 
     return HttpResponse(template.render(context, request))
@@ -57,7 +58,6 @@ def PostDetails(request, post_id):
 
     return HttpResponse(template.render(context, request))
 
-
 @login_required
 def NewPost(request):
     user = request.user.id
@@ -87,7 +87,6 @@ def NewPost(request):
     }
 
     return render(request, 'new_post.html', context)
-
 
 @login_required
 def Tags(request, tag_slug):

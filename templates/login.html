@@ -23,7 +23,7 @@
             margin: 0 auto
         }
         
-        .signup {
+        .login-form {
             display: flex;
             flex-flow: column;
             justify-content: center;
@@ -97,14 +97,15 @@
             <div class="col-md-6 mx-auto py-4 px-0">
                 <div class="card p-0 shadow">
                     <div class="card-title text-center">
-                        <h5 class="mt-5">Hey there!!!!!</h5> <small class="para">Login to your StudentClub Account</small>
-
+                        <h5 class="mt-5">Hey there!!!!!</h5> 
+                        <small class="para">Login to your StudentClub Account</small>
+                        <br>
                         {% if form.errors %}
-                        <span style="color: red; font-style: bold;">Your username and password did not match</span>
+                        <span style="color: #ff0147; font-style: bold;">Your username and password did not match</span>
                         {% endif %}
 
                     </div>
-                    <form class="signup">
+                    <form action="" method="post" role="form" class="login-form">
                         {% csrf_token %}
                         <div class="form-group">
                             <input type="text" class="form-control" placeholder="Username" name="username">
@@ -113,7 +114,7 @@
                             <input type="password" class="form-control" placeholder="password" name="password">
                         </div>
                         
-                        <button type="button" class="btn btn-primary">Login</button>
+                        <button type="submit" class="btn btn-primary">Login</button>
                         <div class="row">
                             <!-- <div class="col-6 col-sm-6">
                                 <a href="#"><p class="text-left pt-2 ml-1">Forgot password?</p></a>
