@@ -6,16 +6,21 @@
 <div class="container">
 
 <div class="jumbotron">
-    <h1>#{{tag.title}}</h1>        
+    <h5>#{{tag.title}}</h5>        
 </div>
 
   {% for item in posts %}
-    <div class="card shadow" style="width:550px;">
+    <div class="card shadow" style="width:550px; height: 380px;">
       <div class="card-body">
         <a href="{{ item.get_absolute_url }}"><img class="card-img-top" src="{{ item.post_picture.url }}" alt="Card image" style="width:100%"></a>
       </div>
     </div>
     <br>
+    <div class="card shadow" style="width:550px;">
+      <div class="card-body">
+        <a href="{{ item.get_absolute_url }}"><img class="card-img-top" src="{{ item.post_picture.url }}" alt="Card image" style="width:100%"></a>
+      </div>
+    </div>
   {% endfor %}
 </div>
 {% endblock %}

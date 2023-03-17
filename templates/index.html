@@ -6,13 +6,15 @@
   <div class="card shadow" style="width:550px;">
     <a href="{{ post.get_absolute_url }}">
       <img class="card-img-top" src="{{ post.post_picture.url }}" alt="" style="width:550px;"></a>
+      <p style="font-size: 13px; margin-left: 10px;">{{ post.posted_date }}</p>
     <div class="card-body" style="display: flex;
     align-items: center;">
       <div class="container">
         <div class="row">
-          <div class="col-md-10 left-content">
+          <div class="col-md-9 left-content">
             <div class="row">
               <div class="col-md-2">
+                
                 {% if post.user.profile.profile_picture %}
                 <img src="{{ post.user.profile.profile_picture.url }}" class="float-left" width="36" height="36">  
                 {% else %}
@@ -38,19 +40,15 @@
                </div>
             </div>           
           </div>
-          <div class="col-md-2 right-content" style="margin-left:auto; margin-bottom: 51px;">
-            <a href="{% url 'postlike' post.id %}" class="btn" style="text-align: center;">
-              <span class="material-icons" style="color: rgb(230, 81, 81);">
-                favorite
-                </span></a>
-              <p>{{ post.likes }} Likes</p>
+          <div class="col-md-3 right-content" style="margin-left:auto; margin-bottom: 51px;">
+            <a href="{% url 'postlike' post.id %}" class="btn" style="text-align: center;" >
+              {{ post.likes }} Likes</a>
+              <p></p>
           </div>
         </div>
         <div class="row" >
-          <div class="col-md-12" style="text-align: justify; margin-top: -40px;">
+          <div class="col-md-12" style="text-align: justify;">
            <h6>{{ post.caption }}</h6>
-           <h6>{{ post.posted_date }}</h6>
-          
           </div>
        </div>  
       </div>
