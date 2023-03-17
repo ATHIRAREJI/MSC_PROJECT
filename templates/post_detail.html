@@ -1,97 +1,37 @@
-{% load static %}
-<!doctype html>
-<html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="{% static '/css/bootstrap.min.css' %}">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
-      rel="stylesheet">
-    <title>StudentClub</title>
-    <style>
-        a.nav-link, div.card-body {
-            display: flex;
-            align-items: center;
-        }
-        .card {
-            margin: 0 auto; /* Added */
-            float: none; /* Added */
-            margin-bottom: 10px; /* Added */
-         }
-         .material-icons {
-          
-          margin-right: 2px;
-          font-size: 22px;
+{% extends 'base.html' %}
+{% block styles %}
+  <style>
+      a.nav-link, div.card-body {
+          display: flex;
+          align-items: center;
+      }
+      .card {
+          margin: 0 auto; /* Added */
+          float: none; /* Added */
+          margin-bottom: 10px; /* Added */
        }
+       .material-icons {
+        
+        margin-right: 2px;
+        font-size: 22px;
+     }
 
-         .date{font-size: 11px}
-         .comment-text{font-size: 12px}
-         .fs-12{font-size: 12px}
-         .shadow-none{box-shadow: none}
-         .name{color: #007bff}
-         .cursor:hover{color: blue}
-         .cursor{cursor: pointer}
-         .textarea{resize: none}
-    </style>
-  </head>
-  <body>
-    
-    <!-- Navigation bar-->
-    <nav class="navbar navbar-expand-sm ">
-        <!-- Brand -->
-        <a class="navbar-brand" href="#">StudentClub</a>
-      
-        <!-- Links -->
-        <ul class="navbar-nav">
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-                <span class="material-icons">
-                    home
-                    </span>Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#"><span class="material-icons d-inline">
-                notifications
-                </span>Notification</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-                <span class="material-icons">
-                    inbox
-                </span>Inbox</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#"><span class="material-icons">
-                face
-                </span>Profile</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#"><span class="material-icons">
-                insert_comment
-                </span>Feedback</a>
-          </li>
-      
-          <!-- Dropdown -->
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
-              Settings
-            </a>
-            <div class="dropdown-menu">
-              <a class="dropdown-item" href="#">Password reset</a>
-              <a class="dropdown-item" href="#">Contact</a>
-              <a class="dropdown-item" href="#">Log out</a>
-            </div>
-          </li>
-        </ul>
-      </nav>
-      <br>
-<!--Nabar end-->
-
+       .date{font-size: 11px}
+       .comment-text{font-size: 12px}
+       .fs-12{font-size: 12px}
+       .shadow-none{box-shadow: none}
+       .name{color: #007bff}
+       .cursor:hover{color: blue}
+       .cursor{cursor: pointer}
+       .textarea{resize: none}
+  </style>
+{% endblock %}
+{% load static %}
+{% block content %}
 <div class="container">
+   <div class="row">
     <div class="card">
-      <img class="card-img-top" src="{{ post.post_picture.url }}" alt="Card image" style="width:100%">
+      <img class="card-img-top" src="{{ post.post_picture.url }}" alt="Card image" style="width:100%; height:460px;">
       <div class="card-body">
           <div class="left-content">
             <div class="row">
@@ -122,21 +62,26 @@
             </div>   
           </div>
           <div class="right-content" style="margin-left:auto; margin-bottom: 51px;">
+            {% if request.user.username == post.user.username %}
+            <a class="btn" style="text-align: center;color: antiquewhite;">
+              {{ post.likes }} Likes</a>
+            {% else %}
             <a href="{% url 'postlike' post.id %}" class="btn" style="text-align: center;">
-              <span class="material-icons">
-                favorite
-                </span></a>
-              <p>{{ post.likes }} Likes</p>
+              {{ post.likes }} Likes</a>
+            {% endif %}
           </div>
       </div>
     </div>
+   </div>
 </div>
 
 <div class="container">
-    <div class="d-flex justify-content-center row">
+  <div class="row">
+    <div class="col-md-8 offset-2">
+      <div class="d-flex justify-content-center row">
         <div class="col-md-12">
             <div class="d-flex flex-column comment-section">
-
+  
               {% for comment in comments %}
                 <div class="bg-white p-2">
                     <div class="d-flex flex-row user-info">
@@ -161,14 +106,14 @@
                     </div>
                 </div>
                 {% endfor %}
-
+  
                 <!-- <div class="bg-white">
                     <div class="d-flex flex-row fs-12">
                         <div class="like p-2 cursor"><i class="fa fa-thumbs-o-up"></i><span class="ml-1">Like</span></div>
                         <div class="like p-2 cursor"><i class="fa fa-commenting-o"></i><span class="ml-1">Comment</span></div>
                     </div>
                 </div> -->
-
+  
                 <div class="bg-light p-2">
                   <form action="" method="post" role="form">
                     {% csrf_token %}
@@ -178,8 +123,7 @@
                       {% else %}
                       <img class="rounded-circle" src="{% static '/img/profile-image.jpg' %}" width="40">
                       {% endif %}
-                      <textarea class="form-control ml-1 shadow-none textarea" name="comment">
-                      </textarea>
+                      <textarea class="form-control ml-1 shadow-none textarea" name="comment"></textarea>
                     </div>
                     <div class="mt-2 text-right">
                       <button type="submit" class="btn btn-primary btn-sm shadow-none">Post comment</button>
@@ -189,13 +133,9 @@
             </div>
         </div>
     </div>
+    </div>
+  </div>
 </div>
 <br>
 <br>
-   
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-  </body>
-</html>
+{% endblock %}

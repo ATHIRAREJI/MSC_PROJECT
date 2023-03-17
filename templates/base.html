@@ -9,11 +9,11 @@
     <link rel="stylesheet" href="{% static '/css/bootstrap.min.css' %}">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
       rel="stylesheet">
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>
     <title>StudentClub</title>
     <style>
         body {
             font-family: Arial, Helvetica, sans-serif;
-            background-color: rgba(255, 1, 1, 0.1)
         }
         a.nav-link{
             display: flex;
@@ -24,11 +24,6 @@
             float: none; /* Added */
             margin-bottom: 10px; /* Added */
          }
-         button.login, button.signup {
-          display: flex;
-          align-items: center;
-      }
-
       div.btns {
           display: flex;
           align-items: center;
@@ -50,6 +45,11 @@
         border: none;
         background: linear-gradient(to right, rgba(249, 0, 104, 1) 0%, rgba(247, 117, 24, 1) 100%);
         background: -webkit-linear-gradient(left, rgba(249, 0, 104, 1) 0%, rgba(247, 117, 24, 1) 100%)
+    }
+    .navbar {
+      color: #fff;
+      background: linear-gradient(to right, rgba(249, 0, 104, 1) 0%, rgba(247, 117, 24, 1) 100%);
+      background: -webkit-linear-gradient(left, rgba(249, 0, 104, 1) 0%, rgba(247, 117, 24, 1) 100%)
     }
 
     input {
@@ -73,20 +73,21 @@
         color: #000;
         letter-spacing: 1px
     }
-    .edit-profile {
-        display: flex;
-        flex-flow: column;
-        justify-content: center;
-        padding: 10px 50px
+    
+    li {
+      color: antiquewhite !important;
     }
 
     </style>
+    {% block styles %}
+
+    {% endblock %}
   </head>
   <body>
     
     <!-- Navigation bar-->
-    <nav class="navbar navbar-expand-lg navbar-light">
-      <a class="navbar-brand" href="#">StudentClub</a>
+    <nav class="navbar navbar-expand-lg navbar-light"  >
+      <a class="navbar-brand" href="#" style="color: antiquewhite; font-weight: bold;">StudentClub</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
       </button>
@@ -94,33 +95,46 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav ml-auto topnav">
               {% if page == 'post' %} 
-                <li class="nav-item active">
-              {% else %}
                 <li class="nav-item">
-              {% endif %}
-                    <a class="nav-link" href="{% url 'index' %}">Post <span class="sr-only">(current)</span></a>
+                  <a class="nav-link" href="{% url 'index' %}" style="color: #764646; font-weight: bold;">Post <span class="sr-only">(current)</span></a>
                 </li>
-
-              {% if page == 'profile' %} 
-                <li class="nav-item active">
               {% else %}
                 <li class="nav-item">
+                  <a class="nav-link" href="{% url 'index' %}" style="color: antiquewhite; font-weight: bold;">Post <span class="sr-only">(current)</span></a>
+                </li>
               {% endif %}
-                  <a class="nav-link" href="{% url 'profile' user.username %}">Profile</a>
-              </li>
+                    
+
+              {% if user.is_authenticated %}  
+                  {% if page == 'profile' %} 
+                    <li class="nav-item active">
+                      <a class="nav-link" href="{% url 'profile' user.username %}" style="color: #764646; font-weight: bold;">Profile</a>
+                  </li>
+                  {% else %}
+                    <li class="nav-item">
+                      <a class="nav-link" href="{% url 'profile' user.username %}" style="color: antiquewhite; font-weight: bold;">Profile</a>
+                  </li>
+                  {% endif %}
+                      
+              
 
               {% if page == 'inbox' %} 
               <li class="nav-item active">
-                {% else %}
-                <li class="nav-item">
-                {% endif %}  
-                  <a class="nav-link" href="{% url 'inbox' %}">Inbox</a>
+                <a class="nav-link" href="{% url 'inbox' %}" style="color: #764646; font-weight: bold;">Inbox</a>
               </li>
+              {% else %}
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'inbox' %}" style="color: antiquewhite; font-weight: bold;">Inbox</a>
+              </li>
+              {% endif %}  
+            
+            {% endif %}
+            
               <li class="nav-item">
-                  <a class="nav-link" href="#">Feedback</a>
+                  <a class="nav-link" href="#" style="color: antiquewhite; font-weight: bold;">Feedback</a>
               </li>
               <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: antiquewhite; font-weight: bold;">
                       Resources
                   </a>
                   <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -130,13 +144,20 @@
                       <a class="dropdown-item" href="#">Omnivic</a>
                   </div>
               </li>
+              {% if user.is_authenticated %}
               <li class="nav-item">
-                  <a class="nav-link" href="#">Logout</a>
+                <a class="nav-link" href="{% url 'logout' %}" style="color: antiquewhite; font-weight: bold;">Logout</a>
               </li>
+              {% else %}
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'logout' %}" style="color: antiquewhite; font-weight: bold;">Login</a>
+              </li>
+              {% endif %}
+             
           </ul>
       </div>
-  </nav>
-      <br>
+    </nav>
+      <br><br><br>
 <!--Nabar end-->
 
 {% block content %}

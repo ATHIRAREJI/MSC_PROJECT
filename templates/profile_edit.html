@@ -1,12 +1,23 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block styles %}
+<style>
+    .edit-profile {
+        display: flex;
+        flex-flow: column;
+        justify-content: center;
+        padding: 5px 30px
+    }
+</style>
+{% endblock %}
+
 {% block content %}
 <div class="container">
     <div class="row">
-        <div class="col-md-8 offset-md-2" style="margin-top: 20px;">
+        <div class="col-md-8 offset-md-2">
             <div class="card shadow" style="border-color: antiquewhite; border-radius: 8px;">
-                <div class="card-title text-center" style="margin-top:25px;">
+                <div class="card-title text-center" style="margin-top:35px;">
                     <h5>Edit Profile</h5>
                 </div>
                 <div class="card-body">

@@ -1,57 +1,67 @@
 {% extends 'base.html' %}
+{% block styles %}
+  <style>
+   
+  </style>
+{% endblock %}
 {% load static %}
 
 {% block content %}
     <div class="container" style="height: 250px;">
       <div class="row" style="height: 250px;">
-       <div class="col-md-3" style="text-align: center; ">
 
-        {% if profile.profile_picture %}
-          <img src="{{ profile.profile_picture.url }}" class="rounded-circle" alt="Cinque Terre" width="170" height="166"> 
-        {% else %}
-          <img src="{% static '/img/profile-image.jpg' %}" class="rounded-circle" alt="Cinque Terre" width="170" height="166">
-        {% endif %}
-          {% if profile.first_name %}
-          <h5>{{ profile.first_name }}  {{ profile.last_name }} </h5>
-          {% endif %}
-          <h6>@{{ profile.user }}</h6>
-          {% if profile.course %}
-            <h6>{{ profile.course }}</h6>
-          {% endif %} 
-       </div>
-       <div class="col-md-9">
-          <div class="row profile-count-display" style="text-align: center;">
-            <div class="col-sm-3">
-                Posts
-                <h4>{{ post_count }}</h4>
-            </div>
-            <div class="col-sm-3">
-                Followers
-                <h4>{{ follower_count }}</h4>
-            </div>
-            <div class="col-sm-3">
-                Following
-                <h4>{{ following_count }}</h4>
-            </div>
-          </div>
-          {% if profile.profile_info %}
-                <p>{{ profile.profile_info }}</p>
-          {% endif %}
+        <div class="col-md-3" style="text-align: center; ">
 
-          {% if user.is_authenticated and user == profile.user %}
-              <a href="{% url 'editprofile' %}" class="btn btn-primary btn-sm" style="width: 30%; margin-top: 5%;">Edit profile</a>
+          {% if profile.profile_picture %}
+            <img src="{{ profile.profile_picture.url }}" class="rounded-circle" alt="Cinque Terre" width="170" height="166"> 
           {% else %}
-            {% if follow_or_not == True %}
-                <a href="{% url 'follow' profile.user 0 %}" class="btn btn-danger btn-sm">Unfollow</a>
-              {% else %}
-                <a href="{% url 'follow' profile.user 1 %}" class="btn btn-success btn-sm">Follow</a>
-              {% endif %}
+            <img src="{% static '/img/profile-image.jpg' %}" class="rounded-circle" alt="Cinque Terre" width="170" height="166">
           {% endif %}
-       </div>
+            {% if profile.first_name %}
+            <h6>{{ profile.first_name }}  {{ profile.last_name }}  @{{ profile.user }}</h6> 
+            {% else %}
+            <h6>@{{ profile.user }}</h6> 
+            {% endif %}
+            
+            {% if profile.course %}
+              <h6>{{ profile.course }}</h6>
+            {% endif %} 
+         </div>
+         <div class="col-md-9">
+            <div class="row profile-count-display" style="text-align: center;">
+              <div class="col-sm-3">
+                  Posts
+                  <h4>{{ post_count }}</h4>
+              </div>
+              <div class="col-sm-3">
+                  Followers
+                  <h4>{{ follower_count }}</h4>
+              </div>
+              <div class="col-sm-3">
+                  Following
+                  <h4>{{ following_count }}</h4>
+              </div>
+            </div>
+            {% if profile.profile_info %}
+                  <p>{{ profile.profile_info }}</p>
+            {% endif %}
+  
+            {% if user.is_authenticated and user == profile.user %}
+                <a href="{% url 'editprofile' %}" class="btn btn-primary btn-sm" style="width: 30%; margin-top: 5%;">Edit profile</a>
+            {% else %}
+              {% if follow_or_not == True %}
+                  <a href="{% url 'follow' profile.user 0 %}" class="btn btn-danger btn-sm" style="width: 30%; margin-top: 5%;">Unfollow</a>
+                {% else %}
+                  <a href="{% url 'follow' profile.user 1 %}" class="btn btn-success btn-sm" style="width: 30%; margin-top: 5%;">Follow</a>
+                {% endif %}
+            {% endif %}
+         </div>
+    
       </div>
     </div>
-      <hr>
+    
     <div class="container post-list">
+      <hr>
         <div class="row" style="margin-top: 10px;">
           {% for post in posts %}
             <div class="col-md-4" style="margin-bottom: 15px;">
@@ -61,7 +71,9 @@
             </div>
           {% empty %}
           <br>
-          <h6>You do not have any post yet..post something and enjoy your day!!...</h6>
+         <div class="col-md-6 offset-md-3 text-center">
+          <h6>Nothing posted yet</h6>
+         </div>
           {% endfor %}
         </div>
     </div>

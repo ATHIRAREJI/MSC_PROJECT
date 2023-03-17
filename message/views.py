@@ -29,7 +29,8 @@ def UserInbox(request):
     context = {
         'message_data': message_data,
         'messages': inbox_messages,
-        'active_message': active_message
+        'active_message': active_message,
+        'page': 'inbox'
     }
 
     return render(request, 'message.html',context)
@@ -53,7 +54,8 @@ def GetDirectMessage(request, username):
     context = {
         'message_data': message_data,
         'messages': inbox_messages,
-        'active_message': active_message
+        'active_message': active_message,
+        'page': 'inbox'
     }
 
     return render(request, 'message.html',context)
@@ -73,14 +75,18 @@ def SendMessage(request):
 
 @login_required
 def SearchUser(request):
+     username = request.user.username
      user_query = request.GET.get('username')
      context = {}
 
      if user_query:
-         users = User.objects.filter(Q(username__icontains=user_query))
+         users = User.objects.filter(Q(username__icontains=user_query)).exclude(username=username)
          context = {
-             'users': users
+             'users': users,
+             'page': 'inbox'
          }
+     else:
+         context = {'page': 'inbox'}
 
      return render(request, 'search_user.html', context)
 

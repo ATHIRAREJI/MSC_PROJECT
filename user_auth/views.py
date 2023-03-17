@@ -87,7 +87,6 @@ def PasswordChange(request):
 def PasswordChangeDone(request):
 	return render(request, 'change_password_done.html')
 
-
 @login_required
 def ProfileFollow(request, username, option):
     user = request.user
@@ -134,8 +133,6 @@ def EditProfile(request):
     }
 
     return render(request, 'profile_edit.html', context)
-
-    
 
 
 
