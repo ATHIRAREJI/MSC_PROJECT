@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'post',
     'comment',
     'message',
+    'feedback'
 ]
 
 MIDDLEWARE = [

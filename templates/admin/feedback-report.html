@@ -1,0 +1,122 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static %}
+
+{% block extrastyle %}{{ block.super }}
+<link rel="stylesheet" href="{% static "admin/css/dashboard.css" %}">
+<link rel="stylesheet" href="{% static '/css/bootstrap.min.css' %}">
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+{% endblock %}
+
+{% block coltype %}colMS{% endblock %}
+
+{% block bodyclass %}{{ block.super }} dashboard{% endblock %}
+
+{% block breadcrumbs %}{% endblock %}
+
+{% block nav-sidebar %}{% endblock %}
+
+{% block content %}
+<div id="container" style="background-color: aqua;">
+<div class="row">
+
+    <div class="card shadow" style="width: 100%; height: auto">
+
+        <div class="row">
+           <div class="col-md-12" style="margin-top: 10px; margin-left: 10px;">
+            <strong>Feedback Report</strong>
+           </div>
+        </div>
+        <form role="form" method="post" action="">
+            <div class="row" style="margin-top: 2%;padding: 2%;">
+                {% csrf_token %}
+                    <div class='col-md-4'>
+                        <div class="form-group">
+                            <div class="input-group start-date">
+                                <input type="text" class="form-control" placeholder="Select start date">
+                                <div class="input-group-addon">
+                                    <span class="glyphicon glyphicon-th"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class='col-md-4'>
+                        <div class="form-group">
+                            <div class="input-group end-date">
+                                <input type="text" class="form-control" placeholder="Select end date">
+                                <div class="input-group-addon">
+                                    <span class="glyphicon glyphicon-th"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-primary" style="color: antiquewhite;">Get your report</button>
+                    </div>
+            
+            </div>
+        </form>
+       <div class="row" style="margin-top: 1%; padding: 2%;">
+        <canvas id="pie-chart"></canvas>
+       </div>
+    </div>
+            
+</div>
+</div>
+{% endblock %}
+{% block extraScripts %}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js" integrity="sha512-T/tUfKSV1bihCnd+MxKD0Hm1uBBroVYBOYSk1knyvQ9VyZJpc/ALb4P0r6ubwVPSGB2GvjeoMAJJImBG12TiaQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+
+    <script>
+        //Bootstrap datepicker default function. Its for initialize two datepicker 
+        $('.start-date input').datepicker({
+            orientation: 'bottom',
+            autoclose: "true",
+            format: 'yyyy-mm-dd'
+        })
+    
+        $('.end-date input').datepicker({
+            orientation: 'bottom',
+            autoclose: "true",
+            format: 'yyyy-mm-dd'
+        })
+
+    //Datepicker deafult function. This for adding a validation to the second date picker for endDate.
+    $(".start-date input").datepicker().on('changeDate', function (selected) {
+        var minDate = new Date(selected.date.valueOf());
+        $('.end-date input').datepicker('setStartDate', minDate);
+    })
+
+    $(".end-date input").datepicker().on('changeDate', function (selected) {
+        getStatement(5)
+    })
+
+
+    var config = {
+        type: 'pie',
+        data: {
+          datasets: [{
+            data: {{ data|safe }},
+            backgroundColor: ['#000', '#808080'],
+            label: 'Population'
+          }],
+          labels: {{ labels|safe }}
+        },
+        options: {
+          responsive: true
+        }
+      };
+  
+      window.onload = function() {
+        var ctx = document.getElementById('pie-chart').getContext('2d');
+        window.myPie = new Chart(ctx, config);
+      };
+
+
+</script>
+{% endblock %}
+
