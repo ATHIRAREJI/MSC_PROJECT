@@ -5,7 +5,8 @@ from django.contrib.auth.models import User
 class Feedback(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     feedback = models.TextField()
-    sentimental_status = models.IntegerField(help_text="1-Positive, 0-Negative")
+    category = models.IntegerField()
+    sentimental_status = models.IntegerField()
     date = models.DateTimeField(auto_now_add=True)
 
     

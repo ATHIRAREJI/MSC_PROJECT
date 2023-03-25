@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load static %}   
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 offset-md-2" style="margin-top: 20px;">
+            <div class="card shadow" style="border-color: antiquewhite; border-radius: 8px;height: 450px; padding: 15px;">
+                <div class="card-body">
+                    <h5>Raise your feedback here!!!! {{ message }}</h5>
+                    {% if message != '' %}
+                    <span style="color: #ff0147; font-style: bold;">Thankyou for your feedback</span>
+                    {% endif %}
+                    <form action="" method="post" role="form">
+                        {% csrf_token %}
+                        <div class="form-group">
+                           
+                         </div>
+                        <div class="form-group">
+                            <label for="caption">Choose category</label>
+                            <select name="category" class="form-control">
+                                <option value="1">Teaching</option>
+                                <option value="2">Course Content</option>
+                                <option value="3">Examination</option>
+                                <option value="4">Labwork</option>
+                                <option value="5">Library Facilities</option>
+                                <option value="6">Extracurricular Activities</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Feedback Comments</label>
+                            <textarea class="form-control shadow-none textarea" rows="5" name="feedback" required></textarea>
+                        </div>
+                        <div style="margin-top: 40px;">
+                            <button type="submit" class="btn float-right" style="color: antiquewhite; width:30%;">Create post</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+   
+    

@@ -12,14 +12,22 @@ from post.models import Post, Follow, Stream
 @login_required
 def FeedbackReport(request):
     if request.method == "POST":
-        labels = ["positive","negative"]
-        data = [45.7, 54.3]
+        labels1 = ["positive","negative"]
+        data1 = [45.7, 54.3]
+        labels2 = ["veg","no-veg"]
+        data2 = [12.7, 87.3]
     else:
-        labels = ["positive","negative"]
-        data = [88, 12]
+        labels1 = ["positive","negative"]
+        data1 = [88, 12]
+
+        labels2 = ["veg","no-veg"]
+        data2 = [62, 38]
+
 
     return render(request, 'admin/feedback-report.html', {
-        'labels': labels,
-        'data': data,
+        'labels1': labels1,
+        'data1': data1,
+        'labels2': labels2,
+        'data2': data2,
     })
 

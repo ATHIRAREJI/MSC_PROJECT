@@ -96,11 +96,11 @@
           <ul class="navbar-nav ml-auto topnav">
               {% if page == 'post' %} 
                 <li class="nav-item">
-                  <a class="nav-link" href="{% url 'index' %}" style="color: #764646; font-weight: bold;">Post <span class="sr-only">(current)</span></a>
+                  <a class="nav-link" href="{% url 'index' %}" style="color: #764646; font-weight: bold;">Home <span class="sr-only">(current)</span></a>
                 </li>
               {% else %}
                 <li class="nav-item">
-                  <a class="nav-link" href="{% url 'index' %}" style="color: antiquewhite; font-weight: bold;">Post <span class="sr-only">(current)</span></a>
+                  <a class="nav-link" href="{% url 'index' %}" style="color: antiquewhite; font-weight: bold;">Home<span class="sr-only">(current)</span></a>
                 </li>
               {% endif %}
                     
@@ -117,6 +117,16 @@
                   {% endif %}
                       
               
+                  {% if page == 'Newpost' %} 
+                  <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'new_post' %}" style="color: #764646; font-weight: bold;">Post</a>
+                  </li>
+                  {% else %}
+                    <li class="nav-item">
+                      <a class="nav-link" href="{% url 'new_post' %}" style="color: antiquewhite; font-weight: bold;">Post</a>
+                  </li>
+                  {% endif %}  
+
 
               {% if page == 'inbox' %} 
               <li class="nav-item active">
@@ -131,9 +141,9 @@
             {% endif %}
             
               <li class="nav-item">
-                  <a class="nav-link" href="#" style="color: antiquewhite; font-weight: bold;">Feedback</a>
+                  <a class="nav-link" href="{% url 'user-feedback' %}" style="color: antiquewhite; font-weight: bold;">Feedback</a>
               </li>
-              <li class="nav-item dropdown">
+              <!-- <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: antiquewhite; font-weight: bold;">
                       Resources
                   </a>
@@ -143,7 +153,7 @@
                       <div class="dropdown-divider"></div>
                       <a class="dropdown-item" href="#">Omnivic</a>
                   </div>
-              </li>
+              </li> -->
               {% if user.is_authenticated %}
               <li class="nav-item">
                 <a class="nav-link" href="{% url 'logout' %}" style="color: antiquewhite; font-weight: bold;">Logout</a>

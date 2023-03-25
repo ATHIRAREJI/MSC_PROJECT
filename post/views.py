@@ -83,7 +83,8 @@ def NewPost(request):
         form = PostForm()
 
     context = {
-        'form': form
+        'form': form,
+        'page': 'Newpost'
     }
 
     return render(request, 'new_post.html', context)
