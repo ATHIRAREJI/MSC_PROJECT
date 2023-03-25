@@ -24,6 +24,7 @@ from user_auth.views import UserProfile,ProfileFollow
 urlpatterns = [
     path('admin/feedback-report', include('admin.urls')),
     path('admin/', admin.site.urls),
+    path('feedback/', include('feedback.urls')),
     path('user/', include('user_auth.urls')),
     path('post/', include('post.urls')),
     path('inbox/', include('message.urls')),
