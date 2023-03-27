@@ -19,23 +19,23 @@
 {% block nav-sidebar %}{% endblock %}
 
 {% block content %}
-<div id="container" style="background-color: aqua;">
+<div id="container" style="background-color: aqua; min-width: 1400px !important;">
 <div class="row">
 
     <div class="card shadow" style="width: 100%; height: auto">
 
         <div class="row">
            <div class="col-md-12" style="margin-top: 10px; margin-left: 10px;">
-            <strong>Feedback Report</strong>
+            <h5><b>Feedback Report</b></h5>
            </div>
         </div>
         <form role="form" method="post" action="">
-            <div class="row" style="margin-top: 2%;padding: 2%;">
+            <div class="row" style="margin-top: 1%;padding: 2%;">
                 {% csrf_token %}
                     <div class='col-md-4'>
                         <div class="form-group">
                             <div class="input-group start-date">
-                                <input type="text" class="form-control" placeholder="Select start date">
+                                <input type="text" name="start_date" class="form-control" placeholder="Select start date" required>
                                 <div class="input-group-addon">
                                     <span class="glyphicon glyphicon-th"></span>
                                 </div>
@@ -45,7 +45,7 @@
                     <div class='col-md-4'>
                         <div class="form-group">
                             <div class="input-group end-date">
-                                <input type="text" class="form-control" placeholder="Select end date">
+                                <input type="text" name="end_date" class="form-control" placeholder="Select end date" required>
                                 <div class="input-group-addon">
                                     <span class="glyphicon glyphicon-th"></span>
                                 </div>
@@ -59,15 +59,38 @@
             </div>
         </form>
        <div class="row" style="margin-top: 1%; padding: 2%;">
-        <div class="col-md-6">
-            <canvas id="pie-chart-1"></canvas>
-        </div>
+            <div class="col-md-4">
+                <h5>Teaching</h5>
+                <canvas id="teaching_chart"></canvas>
+            </div>
 
-        <div class="col-md-6">
-            <canvas id="pie-chart-2"></canvas>
-        </div>
+            <div class="col-md-4">
+                <h5>Course Content</h5>
+                <canvas id="course_content_chart"></canvas>
+            </div>
 
+            <div class="col-md-4">
+                <h5>Examination</h5>
+                <canvas id="examination"></canvas>
+            </div>
        </div>
+
+       <div class="row" style="margin-top: 1%; padding: 2%;">
+        <div class="col-md-4">
+            <h5>Labwork</h5>
+            <canvas id="labwork"></canvas>
+        </div>
+
+        <div class="col-md-4">
+            <h5>Library Facilities</h5>
+            <canvas id="library_facilities"></canvas>
+        </div>
+
+        <div class="col-md-4">
+            <h5>Extracurricular Activities</h5>
+            <canvas id="extracurricular_activities"></canvas>
+        </div>
+   </div>
     </div>
             
 </div>
@@ -83,8 +106,18 @@
         $('.start-date input').datepicker({
             orientation: 'bottom',
             autoclose: "true",
-            format: 'yyyy-mm-dd'
+            format: 'yyyy-mm-dd',
+            setDate: '2023-03-28'
         })
+        
+        var start_date =  " {{start_date}} " ;
+        var end_date = "{{ end_date }}"
+
+        if (start_date) {
+            $(".datepicker").datepicker("update", new Date(start_date));
+        }
+            
+
     
         $('.end-date input').datepicker({
             orientation: 'bottom',
@@ -99,19 +132,19 @@
     })
 
     $(".end-date input").datepicker().on('changeDate', function (selected) {
-        getStatement(5)
+       
     })
 
 
-    var config1 = {
+    var teaching_config = {
         type: 'pie',
         data: {
           datasets: [{
-            data: {{ data1|safe }},
+            data: {{ teaching |safe }},
             backgroundColor: ['#000', '#808080'],
-            label: 'Population'
+            label: 'Teaching Feedback'
           }],
-          labels: {{ labels1|safe }}
+          labels: {{ labels|safe }}
         },
         options: {
           responsive: true
@@ -119,28 +152,101 @@
       };
 
 
-      var config2 = {
+      var course_content_config = {
         type: 'pie',
         data: {
           datasets: [{
-            data: {{ data2|safe }},
-            backgroundColor: ['#009999', '#808080'],
+            data: {{ course_content |safe }},
+            backgroundColor: ['#009999', '#808080','#00e6e6'],
             label: 'Population'
           }],
-          labels: {{ labels2|safe }}
+          labels: {{ labels|safe }}
         },
         options: {
           responsive: true
         }
-      };
+      }; 
+
+      var examination_config = {
+        type: 'pie',
+        data: {
+          datasets: [{
+            data: {{ examination |safe }},
+            backgroundColor: ['#ffe6e6', '#ff8080','#ff1a1a'],
+            label: 'Population'
+          }],
+          labels: {{ labels|safe }}
+        },
+        options: {
+          responsive: true
+        }
+      }; 
+
+      var labwork_config = {
+        type: 'pie',
+        data: {
+          datasets: [{
+            data: {{ labwork |safe }},
+            backgroundColor: ['#b3fff0', '#4dffdb','#00997a'],
+            label: 'Population'
+          }],
+          labels: {{ labels|safe }}
+        },
+        options: {
+          responsive: true
+        }
+      }; 
+
+      var library_facilities_config = {
+        type: 'pie',
+        data: {
+          datasets: [{
+            data: {{ library_facilities |safe }},
+            backgroundColor: ['#eeccff', '#d580ff','#bb33ff'],
+            label: 'Population'
+          }],
+          labels: {{ labels|safe }}
+        },
+        options: {
+          responsive: true
+        }
+      }; 
+
+      var extracurricular_activities_config = {
+        type: 'pie',
+        data: {
+          datasets: [{
+            data: {{ extracurricular_activities |safe }},
+            backgroundColor: ['#809fff', '#b3c6ff','#002db3'],
+            label: 'Population'
+          }],
+          labels: {{ labels|safe }}
+        },
+        options: {
+          responsive: true
+        }
+      }; 
+
 
   
       window.onload = function() {
-        var ctx = document.getElementById('pie-chart-1').getContext('2d');
-        window.myPie = new Chart(ctx, config1);
+        var teaching_chart = document.getElementById('teaching_chart').getContext('2d');
+        window.myPie = new Chart(teaching_chart, teaching_config);
 
-        var ctx = document.getElementById('pie-chart-2').getContext('2d');
-        window.myPie = new Chart(ctx, config2);
+        var course_content_chart = document.getElementById('course_content_chart').getContext('2d');
+        window.myPie = new Chart(course_content_chart, course_content_config);
+
+        var examination = document.getElementById('examination').getContext('2d');
+        window.myPie = new Chart(examination, examination_config);
+
+        var labwork = document.getElementById('labwork').getContext('2d');
+        window.myPie = new Chart(labwork, labwork_config);
+
+        var library_facilities = document.getElementById('library_facilities').getContext('2d');
+        window.myPie = new Chart(library_facilities, library_facilities_config);
+
+        var extracurricular_activities = document.getElementById('extracurricular_activities').getContext('2d');
+        window.myPie = new Chart(extracurricular_activities, extracurricular_activities_config);
 
       };
 

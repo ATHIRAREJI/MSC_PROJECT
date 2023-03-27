@@ -11,9 +11,11 @@ nltk.download('stopwords')
 
 tokenizer = RegexpTokenizer(r"\w+")
 en_stopwords = set(stopwords.words('english'))
+en_stopwords.remove('not')
 ps = PorterStemmer()
+cv = CountVectorizer(ngram_range=(1,2))
 
-def applicationDataPreProcessing(X_data):
+def CheckSentimentsValue(X_data:str) -> int:
     #Convert feedback data into lower case
     lower_data = X_data.lower()
 
@@ -26,14 +28,17 @@ def applicationDataPreProcessing(X_data):
     #Stemming - Converting words into its root format
     stemmed_tokens = [ ps.stem(token) for token in new_tokens ]
 
-    x_clean = " ".join(stemmed_tokens)
+    x_clean = [(" ".join(stemmed_tokens))]
 
     #Vectorization
-    cv = CountVectorizer(ngram_range=(1,2))
-    xt_vector = cv.transform(x_clean).toarray()
+    xt_vector = cv.transform(x_clean).toarray()     
+           
+    #Load the model
+    with open('sentimental-analysis-modal', 'rb') as training_model:
+        model = pickle.load(training_model)
 
-    return x_vector
-
+    predictions = model.predict(xt_vector)
+    return predictions
 
 
 def modelDataPreprocessing(X_data):
@@ -65,9 +70,7 @@ for data in data_values:
     data_list.append(data[1])
 
 X_clean =  modelDataPreprocessing(data_list)
-
 #Vectorization
-cv = CountVectorizer(ngram_range=(1,2))
 x_vector = cv.fit_transform(X_clean).toarray()
 
 mn = MultinomialNB()
@@ -76,7 +79,3 @@ mn.fit(x_vector, y_train)
 
 with open('sentimental-analysis-modal', 'wb') as picklefile:
     pickle.dump(mn,picklefile)
-    
-#Load the model
-#with open('sentimental-analysis-modal', 'rb') as training_model:
-#    model = pickle.load(training_model)
